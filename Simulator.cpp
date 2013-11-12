@@ -2,7 +2,7 @@
  * Simulator.cpp
  *
  *  Created on: Jul 16, 2012
- *      Author: Shawn GAO
+ *    l  Author: Shawn GAO
  */
 
 #include "Simulator.h"
@@ -59,7 +59,10 @@ void Simulator::setup() {
 #endif
 
 	clockDomainCPU = new ClockDomain(
-			new CallbackP0<Simulator, void>(this, &Simulator::update));
+			new CallbackP0<MemorySystem, void>(memorySystem, &MemorySystem::update));
+
+//	clockDomainCPU = new ClockDomain(
+//			new CallbackP0<Simulator, void>(this, &Simulator::update));
 	clockDomainDRAM = new ClockDomain(
 			new CallbackP0<MemorySystem, void>(memorySystem,
 					&MemorySystem::update));
