@@ -38,7 +38,7 @@
 #include "PrintMacros.h"
 #include "BusPacket.h"
 
-
+#include "SimulatorIO.h"
 namespace DRAMSim
 {
 using std::hex;

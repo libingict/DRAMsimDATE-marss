@@ -58,11 +58,9 @@ void Simulator::setup() {
 	memorySystem->registerCallbacks(read_cb, write_cb, NULL);
 #endif
 
-	clockDomainCPU = new ClockDomain(
-			new CallbackP0<MemorySystem, void>(memorySystem, &MemorySystem::update));
 
-//	clockDomainCPU = new ClockDomain(
-//			new CallbackP0<Simulator, void>(this, &Simulator::update));
+	clockDomainCPU = new ClockDomain(
+			new CallbackP0<Simulator, void>(this, &Simulator::update));
 	clockDomainDRAM = new ClockDomain(
 			new CallbackP0<MemorySystem, void>(memorySystem,
 					&MemorySystem::update));
@@ -88,7 +86,8 @@ void Simulator::setup() {
 void Simulator::start() {
 #ifdef RETURN_TRANSACTIONS
 	if (simIO->cycleNum == 0) {
-		WarmupCycle=1e+6;
+		WarmupCycle=0;
+		//std::cout<<"!start simulate!\n";
 		while (pendingTrace || transReceiver->pendingTrans())		//libing
 		//while (pendingTrace == true || transReceiver->pendingTrans() == true)
 		{
@@ -109,7 +108,8 @@ void Simulator::start() {
 
 void Simulator::update() {
 	bool hit = false;
-	if (trans == NULL) {
+/*	if (trans == NULL) {
+
 		trans = simIO->nextTrans();
 		if (trans == NULL) {
 			pendingTrace = false;
@@ -143,7 +143,7 @@ void Simulator::update() {
 		}
 
 	}
-
+*/
 }
 
 void Simulator::report(bool finalStats) {
@@ -199,19 +199,8 @@ Simulator* getMemorySimulator(const string &dev, const string &sys, const string
 {
 		
 	SimulatorIO *simIO = new SimulatorIO(sys,dev,trc,"",pwd,"",NULL,megsOfMemory,0,true);
-/*	SimulatorIO *simIO = new SimulatorIO();
-	simIO->deviceIniFilename=dev;
-	simIO->visFilename= visfilename->c_str();
-	simIO->systemIniFilename=sys;
-	simIO->workingDirectory=pwd;
-	simIO->memorySize=megsOfMemory;
-	simIO->cycleNum=0;
-*/	std::cout <<" !! get the simulator object"<<std::endl;	
 	Simulator* simulator = new Simulator(simIO);
-	std::cout <<" ! get the simulator object"<<std::endl;	
 	simulator->setup();
-	simulator->start();
-	simulator->report(true);
 	return simulator;
 }
 }

@@ -38,7 +38,6 @@
 #include "SystemConfiguration.h"
 #include "BusPacket.h"
 #include "DataPacket.h"
-
 #include <map>
 #include <list>
 
@@ -50,7 +49,6 @@ namespace DRAMSim
 
 	using std::list;
 	using std::map;
-
 	class Transaction
 	{
 		Transaction();

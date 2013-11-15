@@ -40,7 +40,6 @@
 #include <cstdlib>
 #include <stdint.h>
 #include "PrintMacros.h"
-
 #ifdef __APPLE__
 #include <sys/types.h>
 #endif

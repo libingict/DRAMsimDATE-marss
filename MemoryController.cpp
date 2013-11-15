@@ -170,7 +170,9 @@ void MemoryController::updateCounter() {
 				{
 			(*ranks)[outgoingCmdPacket->rank]->receiveFromBus(
 					outgoingCmdPacket);
+			//std::cout<<"\noutgoingCMDpacket address is "<<std::hex<<outgoingCmdPacket->physicalAddress<<std::dec<<" type is "<<outgoingCmdPacket->busPacketType<<std::endl;
 			outgoingCmdPacket = NULL;
+
 		}
 	}
 
@@ -275,7 +277,8 @@ void MemoryController::updateCmdQueue() {
 					}
 				}
 				if (!added) {
-					poppedBusPacket->busPacketType == BusPacket::SET_WRITE;
+					poppedBusPacket->busPacketType == BusPacket::COM_WRITE;
+					//poppedBusPacket->busPacketType == BusPacket::SET_WRITE;
 					completedSET++;
 					if (PSQueue.size() != 0) {
 						for (list<Transaction*>::iterator iter =
@@ -294,7 +297,7 @@ void MemoryController::updateCmdQueue() {
 			}
 		}
 		if (poppedBusPacket->busPacketType == BusPacket::WRITE
-				|| poppedBusPacket->busPacketType == BusPacket::SET_WRITE
+				//|| poppedBusPacket->busPacketType == BusPacket::SET_WRITE
 				|| poppedBusPacket->busPacketType == BusPacket::COM_WRITE
 				|| poppedBusPacket->busPacketType == BusPacket::WRITE_P) {
 			BusPacket *bpWrite = new BusPacket(BusPacket::DATA,
@@ -1200,11 +1203,11 @@ void MemoryController::updatePrint() {
 	}
 
 	//print stats if we're at the end of an epoch
-	/*	if (EPOCH_LENGTH != 0 && currentClockCycle != 0
-	 && currentClockCycle % EPOCH_LENGTH == 0)*/
-	if (currentClockCycle < WarmupCycle) {
+		if (EPOCH_LENGTH != 0 && currentClockCycle != 0
+	 && currentClockCycle % EPOCH_LENGTH == 0)
+{
 
-		//this->printStats();
+		this->printStats();
 
 		/*
 		 cmdStat.readCounter=0;
@@ -1288,8 +1291,8 @@ void MemoryController::printStats(bool finalStats) {
 
 	uint64_t cyclesElapsed;
 	if (EPOCH_LENGTH == 0) {
-		cyclesElapsed = currentClockCycle - WarmupCycle;
-		//		cyclesElapsed = currentClockCycle;
+//		cyclesElapsed = currentClockCycle - WarmupCycle;
+				cyclesElapsed = currentClockCycle;
 	} else if (currentClockCycle % EPOCH_LENGTH == 0) {
 		cyclesElapsed = EPOCH_LENGTH;
 	} else {

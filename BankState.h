@@ -38,7 +38,7 @@
 
 #include "SystemConfiguration.h"
 #include "BusPacket.h"
-
+#include "SimulatorIO.h"
 namespace DRAMSim
 {
 
