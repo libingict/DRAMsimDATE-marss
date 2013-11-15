@@ -30,8 +30,6 @@
 
 
 
-
-
 #ifndef PRINT_MACROS_H
 #define PRINT_MACROS_H
 
@@ -58,11 +56,12 @@ using std::ostream;
 	#define PRINTN(str) ;
 #else
 	#ifdef LOG_OUTPUT
-		#define PRINT(str)  { std::cout<<str<<std::endl; }
-		#define PRINTN(str) { std::cout <<str; }
-/*	#define PRINT(str)  { dramsim_log <<str<<std::endl; }
-		#define PRINTN(str) { dramsim_log <<str; }
-*/
+//		#define PRINT(str)  { std::cout<<str<<std::endl; }
+//		#define PRINTN(str) { std::cout <<str; }
+//	#define PRINT(str)  { dramsim_log <<str<<std::endl; }
+//		#define PRINTN(str) { dramsim_log <<str; }
+	#define PRINT(str)  { SimulatorIO::logFile <<str<<std::endl; }
+		#define PRINTN(str) { SimulatorIO::logFile <<str; }
 	#else
 		#define PRINT(str)  if(SHOW_SIM_OUTPUT) { std::cout <<str<<std::endl; }
 		#define PRINTN(str) if(SHOW_SIM_OUTPUT) { std::cout <<str; }

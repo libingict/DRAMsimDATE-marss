@@ -179,7 +179,6 @@ namespace DRAMSim
 		unsigned iChannel = findChannelNumber(addr);
 		Transaction::TransactionType type = isWrite ? Transaction::DATA_WRITE : Transaction::DATA_READ;
 		Transaction *trans = new Transaction(type,addr,NULL,LEN_DEF,Simulator::clockDomainCPU->clockcycle);
-
 		// push_back in memoryController will make a copy of this during
 		// addTransaction so it's kosher for the reference to be local
 
