@@ -65,12 +65,12 @@ namespace DRAMSim
 		unsigned column;
 
 		size_t len;
-
+		bool isSETWRITE;
 		//void *data;
 		DataPacket *data;
 
 		//Functions
-		BusPacket(BusPacketType packtype, unsigned rk, unsigned bk=0, unsigned rw=0, unsigned col=0, uint64_t physicalAddr=0, DataPacket *dat=NULL, size_t len=LEN_DEF);
+		BusPacket(BusPacketType packtype, unsigned rk, unsigned bk=0, unsigned rw=0, unsigned col=0, uint64_t physicalAddr=0, DataPacket *dat=NULL, size_t len=LEN_DEF,bool isSETWRITE=false);
 
 		void print();
 		void print(uint64_t currentClockCycle, bool dataStart);
