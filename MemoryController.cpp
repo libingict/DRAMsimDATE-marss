@@ -170,7 +170,6 @@ void MemoryController::updateCounter() {
 				{
 			(*ranks)[outgoingCmdPacket->rank]->receiveFromBus(
 					outgoingCmdPacket);
-			//std::cout<<"\noutgoingCMDpacket address is "<<std::hex<<outgoingCmdPacket->physicalAddress<<std::dec<<" type is "<<outgoingCmdPacket->busPacketType<<std::endl;
 			outgoingCmdPacket = NULL;
 
 		}
@@ -180,17 +179,21 @@ void MemoryController::updateCounter() {
 	if (outgoingDataPacket != NULL) {
 		dataCyclesLeft--;
 		if (dataCyclesLeft == 0) {
+		//	outgoingDataPacket->print();
 			(*ranks)[outgoingDataPacket->rank]->receiveFromBus(
 					outgoingDataPacket);
 
 			//inform upper levels that a write is done
-			if (parentMemorySystem->WriteDataDone != NULL) {
-				(*parentMemorySystem->WriteDataDone)(channelID,
-						outgoingDataPacket->physicalAddress, currentClockCycle);
+			if(outgoingDataPacket->isSETWRITE==false){	
+				if (parentMemorySystem->WriteDataDone != NULL) {
+					(*parentMemorySystem->WriteDataDone)(channelID,
+							outgoingDataPacket->physicalAddress, currentClockCycle);
+				}
 			}
 			outgoingDataPacket = NULL;
 		}
 	}
+
 
 	//if any outstanding write data needs to be sent
 	//and the appropriate amount of time has passed (WL)
@@ -214,7 +217,6 @@ void MemoryController::updateCounter() {
 				ERROR("== Error - Data Bus Collision");
 				exit(-1);
 			}
-
 			outgoingDataPacket = writeDataToSend[0];
 			dataCyclesLeft = BL / 2;
 			totalTransactions++;
@@ -297,7 +299,7 @@ void MemoryController::updateCmdQueue() {
 			}
 		}
 		if (poppedBusPacket->busPacketType == BusPacket::WRITE
-				//|| poppedBusPacket->busPacketType == BusPacket::SET_WRITE
+				|| poppedBusPacket->busPacketType == BusPacket::SET_WRITE
 				|| poppedBusPacket->busPacketType == BusPacket::COM_WRITE
 				|| poppedBusPacket->busPacketType == BusPacket::WRITE_P) {
 			BusPacket *bpWrite = new BusPacket(BusPacket::DATA,
@@ -305,8 +307,11 @@ void MemoryController::updateCmdQueue() {
 					poppedBusPacket->row, poppedBusPacket->column,
 					poppedBusPacket->physicalAddress, poppedBusPacket->data,
 					poppedBusPacket->len);
-
+			if(poppedBusPacket->busPacketType==BusPacket::SET_WRITE){
+				bpWrite->isSETWRITE=true;			
+			}
 			writeDataToSend.push_back(bpWrite);
+
 			writeDataCountdown.push_back(WL);
 		}
 

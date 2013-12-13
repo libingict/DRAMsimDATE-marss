@@ -330,7 +330,7 @@ using std::max;
 			break;
 		default:
 			ERROR("== Error - Unknown BusPacketType trying to be sent to Bank");
-			exit(0);
+			//exit(0);
 			break;
 		}
 	}

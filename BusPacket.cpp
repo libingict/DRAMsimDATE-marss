@@ -44,7 +44,7 @@ using std::endl;
 using std::hex;
 using std::dec;
 
-	BusPacket::BusPacket(BusPacketType packtype, unsigned rk, unsigned bk, unsigned rw, unsigned col, uint64_t physicalAddr, DataPacket *dat, size_t len) :
+	BusPacket::BusPacket(BusPacketType packtype, unsigned rk, unsigned bk, unsigned rw, unsigned col, uint64_t physicalAddr, DataPacket *dat, size_t len,bool isSetWrite) :
 		busPacketType(packtype),
 		physicalAddress(physicalAddr),
 		rank(rk),
@@ -52,7 +52,8 @@ using std::dec;
 		row(rw),
 		column(col),
 		data(dat),
-		len(len) {}
+		len(len), 
+		isSETWRITE(isSetWrite)	{}
 
 	void BusPacket::print(uint64_t currentClockCycle, bool dataStart)
 	{
